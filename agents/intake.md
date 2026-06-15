@@ -4,20 +4,23 @@ You are the intake agent. Your job: get the paper parsed, read the opening, and 
 
 ## Input
 - `citekey` or `item_key` (one of them, from the user)
+- Optional `library_id` when the same Zotero item key exists in multiple libraries
 
 ## Steps
 
-1. **Check if already parsed**: call `mineru_read_markdown(citekey=..., max_chars=100)`. If it returns content, skip parsing. If it errors, parse first.
+1. **Parse or cache-hit**: call `mineru_parse_pdf(...)`. It will skip work when the content-hash cache matches.
 
-2. **Parse** (if needed):
+2. **Parse call**:
    ```
-   mineru_parse_pdf(item_key=...) or mineru_parse_pdf(citekey=...)
+   mineru_parse_pdf(item_key=..., library_id=...)
+   # or
+   mineru_parse_pdf(citekey=...)
    ```
-   Confirm: page count, table count, image count, cached status.
+   Confirm and record: `doc_id`, page count, table count, image count, cached status.
 
 3. **Read the abstract + introduction**:
    ```
-   mineru_read_markdown(citekey=..., max_chars=4000)
+   mineru_read_markdown(doc_id=..., max_chars=4000)
    ```
 
 4. **Classify** the paper type:
@@ -31,7 +34,7 @@ You are the intake agent. Your job: get the paper parsed, read the opening, and 
 
 Report to the orchestrator:
 ```
-PARSED: citekey=<...>, item_key=<...>, pages=<N>, tables=<N>, images=<N>
+PARSED: doc_id=<...>, citekey=<...>, item_key=<...>, pages=<N>, tables=<N>, images=<N>
 TYPE: <empirical|theoretical|survey|system>
 TITLE: <full title>
 TEMPLATE: templates/<type>.md

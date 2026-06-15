@@ -3,29 +3,29 @@
 You are the evidence agent. Your job: read the paper deeply and collect evidence into a ledger. You do NOT write the note or make judgments yet.
 
 ## Input
-- `citekey`, `item_key`, `paper_type`, page count (from intake agent)
+- `doc_id`, `citekey`, `item_key`, `paper_type`, page count (from intake agent)
 
 ## Steps
 
 1. **Read the method section** (usually pages 3-6 for a typical paper):
    ```
-   mineru_read_markdown(citekey=..., page=3)
-   mineru_read_markdown(citekey=..., page=4)
+   mineru_read_markdown(doc_id=..., page=3)
+   mineru_read_markdown(doc_id=..., page=4)
    ```
 
 2. **Find and resolve key tables**:
    ```
-   mineru_list_anchors(citekey=..., kind="table")
+   mineru_list_anchors(doc_id=..., kind="table")
    ```
    For each table that looks important (main results, ablation, comparison):
    ```
-   mineru_resolve_anchor(citekey=..., anchor_id="a_table_pN_XXXX")
+   mineru_resolve_anchor(doc_id=..., anchor_id="a_table_pN_XXXX")
    ```
    Capture the `markdownTable` (GFM) — this goes directly into the note.
 
 3. **Survey figures**:
    ```
-   mineru_list_visual_candidates(citekey=...)
+   mineru_list_visual_candidates(doc_id=...)
    ```
    For each figure, read the caption + nearby text. Decide which are worth embedding:
    - Architecture/framework diagrams → yes (shows the structure)
@@ -35,7 +35,7 @@ You are the evidence agent. Your job: read the paper deeply and collect evidence
 
 4. **Read experiments/results** (for empirical), or proofs (for theoretical):
    ```
-   mineru_read_markdown(citekey=..., page=N)
+   mineru_read_markdown(doc_id=..., page=N)
    ```
 
 5. **Highlight key passages in Zotero** (recommended for `full` mode) — creates clickable traceability from note to PDF:

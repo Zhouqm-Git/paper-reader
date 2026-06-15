@@ -6,7 +6,7 @@ Better Notes (a Zotero plugin) can mirror your Obsidian note back to Zotero as a
 
 ```
 Obsidian vault (primary)              Zotero (mirror)
-  notes/<citekey>.md  ──Auto-Sync──→  note item (HTML, under parent paper)
+  notes/<doc_id>/<citekey>.md  ──Auto-Sync──→  note item (HTML, under parent paper)
          ↑                                ↓
          └────Auto-Sync (MD5+version)────┘
 ```
@@ -17,14 +17,14 @@ Obsidian vault (primary)              Zotero (mirror)
 
 ## One-Time Setup (per note)
 
-After the agent writes `notes/<citekey>.md`:
+After the agent writes `notes/<doc_id>/<citekey>.md`:
 
 1. **Open Zotero**, navigate to the paper item.
 2. If no note exists: right-click the paper → **Add Note** (creates a child note).
 3. Open the note in the editor.
 4. Right-click → **Better Notes** → **Set Auto-Sync**.
 5. In the dialog:
-   - **File path**: `notes/<citekey>.md` (relative to vault root, or absolute path).
+   - **File path**: `notes/<doc_id>/<citekey>.md` (relative to vault root, or absolute path).
    - **Format**: Markdown.
    - Check **"with YAML header"** — this injects `$version` for conflict detection.
    - Check **"Sync"** to confirm.
@@ -50,7 +50,7 @@ In Zotero → Edit → Preferences → Better Notes:
 - **Auto-sync linked notes**: enable (syncs notes that have Auto-Sync set).
 
 Do not rely on Better Notes to mirror vault-relative figure files. Paper figures
-stay in `attachments/papers/<citekey>/` and are meant to render in Obsidian; the
+stay in `attachments/papers/<doc_id>/` and are meant to render in Obsidian; the
 Zotero mirror is primarily for text search, backup, and annotation links.
 
 ## Better Notes Note Template (Zotero-side)
@@ -68,8 +68,8 @@ This template matches the Obsidian `templates/empirical.md` structure, so notes 
 
 ## What Better Notes Does NOT Sync
 
-- **Images/figures**: Better Notes syncs the note HTML/markdown, but the image files stay in the Obsidian vault (`attachments/papers/<citekey>/`). Zotero shows broken image links for vault-relative paths. This is a known limitation.
-- **The parsed markdown** (`.raw/<citekey>/<citekey>.md`): this is a MinerU artifact, not a note. It stays in the vault only.
+- **Images/figures**: Better Notes syncs the note HTML/markdown, but the image files stay in the Obsidian vault (`attachments/papers/<doc_id>/`). Zotero shows broken image links for vault-relative paths. This is a known limitation.
+- **The parsed markdown** (`.raw/<doc_id>/<citekey>.md`): this is a MinerU artifact, not a note. It stays in the vault only.
 - **Anchors/content.json**: vault-only metadata.
 
 ## Troubleshooting

@@ -8,15 +8,17 @@ Use for papers with experiments: datasets, baselines, ablation studies, metrics.
 type: source
 source_type: paper
 title: "<Full Paper Title>"
+doc_id: <doc_id>
 citekey: <citekey>
 item_key: <ITEMKEY>
+library_id: <libraryID>
 authors:
   - "<Author 1>"
   - "<Author 2>"
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[.raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<doc_id>/<citekey>.md]]"
 status: seed
 paper_type: empirical
 key_claims:
@@ -91,7 +93,7 @@ barely hurt, suggesting the gains come from stacking tricks?> (Table <N>, p.<N>)
 <!-- Only embed figures that add information beyond text. Architecture diagrams and key
      result plots are worth it; decorative icons are not. Use the auto-merged figure paths. -->
 
-![[attachments/papers/<citekey>/fig_<...>.png]]
+![[attachments/papers/<doc_id>/fig_<...>.png]]
 *<1-3 sentence visual reading — what does this figure show and why does it matter?>*
 
 ## Strengths

@@ -1,6 +1,6 @@
 # Full Analysis Example: WBench
 
-A walkthrough of the paper-reader skill on a real paper. Shows the exact tool calls, evidence collected, and final note produced. The paper is **WBench** (citekey: `yingWBenchComprehensiveMultiturn2026`, Zotero item_key: `CFSHQZRJ`).
+A walkthrough of the paper-reader skill on a real paper. Shows the exact tool calls, evidence collected, and final note produced. The paper is **WBench** (doc_id: `lib-1/CFSHQZRJ`, citekey: `yingWBenchComprehensiveMultiturn2026`, Zotero item_key: `CFSHQZRJ`).
 
 ---
 
@@ -10,14 +10,15 @@ A walkthrough of the paper-reader skill on a real paper. Shows the exact tool ca
 ```
 → mineru_parse_pdf(item_key="CFSHQZRJ")
 ← Parsed yingWBenchComprehensiveMultiturn2026.
+   - doc_id: lib-1/CFSHQZRJ
    - pages: 51, images: 33, tables: 10, chars: 190490
-   - markdown: .raw/yingWBenchComprehensiveMultiturn2026/...
+   - markdown: .raw/lib-1/CFSHQZRJ/yingWBenchComprehensiveMultiturn2026.md
    - 12 figures auto-merged from fragments
 ```
 
 ### Step 2: Read abstract, classify
 ```
-→ mineru_read_markdown(citekey="yingWBenchComprehensiveMultiturn2026", max_chars=3000)
+→ mineru_read_markdown(doc_id="lib-1/CFSHQZRJ", max_chars=3000)
 ← [returns abstract + introduction]
 ```
 
@@ -32,17 +33,17 @@ Key passage read:
 
 ### Read key sections
 ```
-→ mineru_read_markdown(citekey="...", page=5)   # benchmark comparison
-→ mineru_read_markdown(citekey="...", page=9)   # main results table
-→ mineru_read_markdown(citekey="...", page=15)  # metric details
+→ mineru_read_markdown(doc_id="...", page=5)   # benchmark comparison
+→ mineru_read_markdown(doc_id="...", page=9)   # main results table
+→ mineru_read_markdown(doc_id="...", page=15)  # metric details
 ```
 
 ### Collect tables (GFM, ready to cite)
 ```
-→ mineru_list_anchors(citekey="...", kind="table")
+→ mineru_list_anchors(doc_id="...", kind="table")
 ← 10 table anchors
 
-→ mineru_resolve_anchor(citekey="...", anchor_id="a_table_p5_0000")
+→ mineru_resolve_anchor(doc_id="...", anchor_id="a_table_p5_0000")
 ← Table 1: Comparison with representative benchmarks
    markdownTable:
    | Benchmark | Input | Perspectives | Interactions | Dimensions | Scale |
@@ -54,9 +55,9 @@ Key passage read:
 
 ### Survey figures
 ```
-→ mineru_list_visual_candidates(citekey="...")
-← Figure 1 — page 3: "Overview of WBench evaluation framework"  attachments/papers/.../fig_a_image_p3_0005.png
-   Figure 7 — page 21: "Scene and style coverage"               attachments/papers/.../fig_a_image_p21_0035.png
+→ mineru_list_visual_candidates(doc_id="...")
+← Figure 1 — page 3: "Overview of WBench evaluation framework"  attachments/papers/lib-1/CFSHQZRJ/fig_a_image_p3_0005.png
+   Figure 7 — page 21: "Scene and style coverage"               attachments/papers/lib-1/CFSHQZRJ/fig_a_image_p21_0035.png
    ...
 ```
 
@@ -75,7 +76,7 @@ Decision: Figure 1 (framework overview) is worth embedding — it shows the 5-di
     ("22 automatic sub-metrics validated against human judgments", "Section 4, p.12", "")
   ],
   "figures": [
-    ("Framework overview showing 5 dimensions", "p.3", "attachments/papers/.../fig_a_image_p3_0005.png")
+    ("Framework overview showing 5 dimensions", "p.3", "attachments/papers/lib-1/CFSHQZRJ/fig_a_image_p3_0005.png")
   ]
 }
 ```
@@ -101,7 +102,7 @@ Decision: Figure 1 (framework overview) is worth embedding — it shows the 5-di
 
 ## Phase 4 — Write
 
-The final note (written to `notes/yingWBenchComprehensiveMultiturn2026.md`):
+The final note (written to `notes/lib-1/CFSHQZRJ/yingWBenchComprehensiveMultiturn2026.md`):
 
 ---
 
@@ -110,15 +111,17 @@ The final note (written to `notes/yingWBenchComprehensiveMultiturn2026.md`):
 type: source
 source_type: paper
 title: "WBench: A Comprehensive Multi-turn Benchmark for Interactive Video World Model Evaluation"
+doc_id: lib-1/CFSHQZRJ
 citekey: yingWBenchComprehensiveMultiturn2026
 item_key: CFSHQZRJ
+library_id: 1
 authors:
   - "Kaining Ying"
   - "Hengrui Hu"
 year: 2026
 venue: "arXiv"
 url: "https://arxiv.org/abs/2605.25874"
-pdf: "[[.raw/yingWBenchComprehensiveMultiturn2026/yingWBenchComprehensiveMultiturn2026.md]]"
+pdf: "[[.raw/lib-1/CFSHQZRJ/yingWBenchComprehensiveMultiturn2026.md]]"
 zotero: "[Zotero](zotero://select/library/items/CFSHQZRJ)"
 status: seed
 paper_type: empirical
@@ -173,7 +176,7 @@ The metric validation is thorough — each sub-metric's correlation with human j
 
 ## Figures
 
-![[attachments/papers/yingWBenchComprehensiveMultiturn2026/fig_a_image_p3_0005.png]]
+![[attachments/papers/lib-1/CFSHQZRJ/fig_a_image_p3_0005.png]]
 *Figure 1: Overview of the WBench evaluation framework showing the 5-dimension structure and how test cases flow through specialist evaluators (p.3).*
 
 ## Strengths
@@ -203,4 +206,4 @@ WBench is a significant contribution as the first comprehensive world-model benc
 3. **Auto-merged figure**: `fig_a_image_p3_0005.png` is a complete figure (MinerU fragments were auto-merged during parse).
 4. **No `@[[metaName]]`**: citations use `(p.N)` and `Table N` — portable, standard.
 5. **Critical, not summarizing**: the Risks section identifies a real gap (dimension redundancy) the paper doesn't address.
-6. **Zotero-linked**: frontmatter has `citekey` + `item_key`, ready for Better Notes sync.
+6. **Zotero-linked**: frontmatter has `doc_id`, `citekey`, `item_key`, and `library_id`, ready for Better Notes sync.

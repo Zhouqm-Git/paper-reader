@@ -6,14 +6,16 @@ Use for papers with formal definitions, theorems, proofs, complexity analysis.
 type: source
 source_type: paper
 title: "<Full Paper Title>"
+doc_id: <doc_id>
 citekey: <citekey>
 item_key: <ITEMKEY>
+library_id: <libraryID>
 authors:
   - "<Author 1>"
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[.raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<doc_id>/<citekey>.md]]"
 status: seed
 paper_type: theoretical
 key_claims:

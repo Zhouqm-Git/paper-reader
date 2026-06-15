@@ -7,13 +7,13 @@ description: "Read a Zotero paper via MinerU and write a structured analysis not
 
 Read a Zotero paper end-to-end via MinerU, judge it by a technical rubric, and write a structured analysis note — every claim backed by a real page reference, GFM table, figure, or clickable Zotero annotation.
 
-**Single source of truth for paper notes**: the note lives in the Obsidian vault at `notes/<citekey>.md`. MinerU parse/cache artifacts live in hidden `.raw/<citekey>/`; user-facing figure and region images live in `attachments/papers/<citekey>/`. Better Notes (optional) mirrors the note back to Zotero for backup and search. Zotero annotations (highlights) created during analysis are clickable from the note via `zotero://` links.
+**Single source of truth for paper notes**: the note lives in the Obsidian vault at `notes/<doc_id>/<citekey>.md`. `doc_id` is the MinerU parse identity returned by `mineru_parse_pdf` (`lib-<libraryID>/<item_key>`), not the citekey. MinerU parse/cache artifacts live in hidden `.raw/<doc_id>/`; user-facing figure and region images live in `attachments/papers/<doc_id>/`. Better Notes (optional) mirrors the note back to Zotero for backup and search. Zotero annotations (highlights) created during analysis are clickable from the note via `zotero://` links.
 
 ## Prerequisites
 
 - **mineru-zotero-mcp** server: `mineru_parse_pdf`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_capture_region`, `mineru_check_quota`, `mineru_parse_batch`.
 - **zotero-mcp** server: `zotero_create_annotation`, `zotero_create_area_annotation`, `zotero_get_item_children`, `zotero_get_annotations`, `zotero_create_note`, `zotero_search_by_citation_key`.
-- Vault root set via `VAULT_ROOT` env. Papers parse to `.raw/<citekey>/`; figures/captures go to `attachments/papers/<citekey>/`; notes go to `notes/<citekey>.md`.
+- Vault root set via `VAULT_ROOT` env. Papers parse to `.raw/<doc_id>/`; figures/captures go to `attachments/papers/<doc_id>/`; notes go to `notes/<doc_id>/<citekey>.md`.
 - Obsidian syntax follows the [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) `obsidian-markdown` skill if installed; otherwise standard OFM.
 
 ---
@@ -35,17 +35,17 @@ The golden rule across all phases: **never write a claim you cannot point to a p
 
 **Goal**: get the paper parsed and classified.
 
-1. **Parse** (skip if already parsed — check with `mineru_read_markdown` first):
+1. **Parse**:
    ```
    mineru_parse_pdf(item_key="CFSHQZRJ")
    # or
    mineru_parse_pdf(citekey="smith2024")
    ```
-   Confirm: `cached: True/False`, page count, table count.
+   Confirm and record the returned `doc_id`, `cached: True/False`, page count, table count. If an item key is ambiguous across Zotero libraries, re-run with `library_id=<id>`.
 
 2. **Read the opening** to classify:
    ```
-   mineru_read_markdown(citekey="smith2024", max_chars=4000)
+   mineru_read_markdown(doc_id="lib-1/CFSHQZRJ", max_chars=4000)
    ```
    Look at abstract + introduction. Determine `paper_type`:
    - **empirical**: has datasets, baselines, ablation studies, metrics tables
@@ -55,7 +55,7 @@ The golden rule across all phases: **never write a claim you cannot point to a p
 
 3. **Select template** from `templates/<paper_type>.md`. If unsure, default to `empirical.md`.
 
-4. Record in your working memory: `citekey`, `item_key`, `paper_type`, `title`, page count.
+4. Record in your working memory: `doc_id`, `citekey`, `item_key`, `paper_type`, `title`, page count.
 
 > For batch: run `mineru_check_quota` first, then `mineru_parse_batch`.
 
@@ -67,24 +67,24 @@ The golden rule across all phases: **never write a claim you cannot point to a p
 
 1. **Read deeply** — page by page or by section:
    ```
-   mineru_read_markdown(citekey="smith2024", page=3)
-   mineru_read_markdown(citekey="smith2024", page=5)
+   mineru_read_markdown(doc_id="lib-1/CFSHQZRJ", page=3)
+   mineru_read_markdown(doc_id="lib-1/CFSHQZRJ", page=5)
    ```
 
 2. **Find key tables** — tables are GFM markdown (not images), ready to cite:
    ```
-   mineru_list_anchors(citekey="smith2024", kind="table")
-   mineru_resolve_anchor(citekey="smith2024", anchor_id="a_table_p6_0000")
+   mineru_list_anchors(doc_id="lib-1/CFSHQZRJ", kind="table")
+   mineru_resolve_anchor(doc_id="lib-1/CFSHQZRJ", anchor_id="a_table_p6_0000")
    → returns markdownTable (GFM) — capture this for the note
    ```
 
 3. **Survey figures** — the figure catalog gives caption + location + path:
    ```
-   mineru_list_visual_candidates(citekey="smith2024")
+   mineru_list_visual_candidates(doc_id="lib-1/CFSHQZRJ")
    → each figure already merged (fragments auto-joined during parse)
    → decide which figures are worth embedding (use caption + nearby text)
    ```
-   For figures you want in the note, note their `imagePath` (e.g. `attachments/papers/smith2024/fig_a_image_p3_0005.png`).
+   For figures you want in the note, note their `imagePath` (e.g. `attachments/papers/lib-1/CFSHQZRJ/fig_a_image_p3_0005.png`).
 
 4. **Highlight key passages in Zotero** (recommended for `full` mode) — creates clickable traceability from note to PDF:
    ```
@@ -160,23 +160,23 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 2. **Citation format** (portable, no private syntax):
    - Text evidence: `> original fragment (p.3)` — blockquote with page
    - Tables: inline the GFM table directly (from `resolve_anchor`)
-   - Figures: `![[attachments/papers/citekey/fig_xxx.png]]` — Obsidian embed of the auto-merged figure
+   - Figures: `![[attachments/papers/<doc_id>/fig_xxx.png]]` — Obsidian embed of the auto-merged figure
    - Equations: `$LaTeX$` inline (from anchor `textFormat`)
-   - Cross-reference: `[[citekey]]` wikilink to other papers' notes
+   - Cross-reference: use the note path or alias, e.g. `[[notes/lib-1/CFSHQZRJ/smith2024|smith2024]]`
    - **Zotero deep links** (clickable in Obsidian — opens Zotero and navigates):
      - Jump to paper item: `[Zotero](zotero://select/library/items/ITEMKEY)` — use `item_key` from frontmatter
      - Jump to an annotation: `(p.3, [annot](zotero://select/library/items/ANNOTATIONKEY))` — use the annotation key from Phase 2
      - These work because Zotero registers the `zotero://` URL scheme system-wide
 
-3. **Frontmatter** — use the schema in [`references/frontmatter.md`](references/frontmatter.md). Required: `citekey`, `item_key`, `paper_type`, `key_claims`, `status`.
+3. **Frontmatter** — use the schema in [`references/frontmatter.md`](references/frontmatter.md). Required: `doc_id`, `citekey`, `item_key`, `paper_type`, `key_claims`, `status`.
 
 4. **Write to vault**:
    ```
-   notes/<citekey>.md
+   notes/<doc_id>/<citekey>.md
    ```
 
 5. **Optional — Zotero sync** (tell the user, don't auto-do it):
-   > "Note written to `notes/<citekey>.md`. To enable Zotero two-way sync via Better Notes: open Zotero → select this paper's note → right-click → Better Notes → Set Auto-Sync → choose `notes/<citekey>.md`."
+   > "Note written to `notes/<doc_id>/<citekey>.md`. To enable Zotero two-way sync via Better Notes: open Zotero → select this paper's note → right-click → Better Notes → Set Auto-Sync → choose `notes/<doc_id>/<citekey>.md`."
 
 ---
 
@@ -186,14 +186,14 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 
 | Tool | Phase | Purpose |
 |---|---|---|
-| `mineru_parse_pdf` | Intake | Parse one Zotero PDF → `.raw/<citekey>/` + `attachments/papers/<citekey>/` |
+| `mineru_parse_pdf` | Intake | Parse one Zotero PDF → `.raw/<doc_id>/` + `attachments/papers/<doc_id>/` |
 | `mineru_parse_batch` | Intake | Batch parse (checks quota first) |
 | `mineru_check_quota` | Intake | Estimate remaining MinerU quota |
-| `mineru_read_markdown` | Intake, Evidence | Read parsed md, optionally by page |
-| `mineru_list_anchors` | Evidence | List text/image/table/equation anchors |
-| `mineru_resolve_anchor` | Evidence | Get one anchor's detail (tables → GFM) |
-| `mineru_list_visual_candidates` | Evidence | Figure catalog (caption + path + context) |
-| `mineru_capture_region` | Evidence | Render a formula/table/text region as PNG |
+| `mineru_read_markdown` | Intake, Evidence | Read parsed md by `doc_id`, optionally by page |
+| `mineru_list_anchors` | Evidence | List text/image/table/equation anchors by `doc_id` |
+| `mineru_resolve_anchor` | Evidence | Get one anchor's detail by `doc_id` (tables → GFM) |
+| `mineru_list_visual_candidates` | Evidence | Figure catalog by `doc_id` (caption + path + context) |
+| `mineru_capture_region` | Evidence | Render a formula/table/text region as PNG under `attachments/papers/<doc_id>/` |
 
 ### zotero-mcp (annotations + notes + metadata)
 
@@ -222,7 +222,7 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 
 - ❌ **Retelling the abstract**. The note must add judgment, not summarize.
 - ❌ **Writing claims without page/table/figure references**. Every claim needs evidence.
-- ❌ **Using `@[[metaName]]`** (old CiteFlow syntax). Use `(p.3)`, `[[citekey]]`, or `![[path]]`.
+- ❌ **Using `@[[metaName]]`** (old CiteFlow syntax). Use `(p.3)`, an Obsidian note link, or `![[path]]`.
 - ❌ **Section-by-section paraphrase**. Organize by analysis dimensions, not paper sections.
 - ❌ **Embedding raw HTML tables**. Use GFM pipe tables. Only fall back to HTML for >500-cell complex tables.
 - ❌ **Using yellow `#ffd400` for agent annotations**. Always use purple `#a28ae5` so user can distinguish.

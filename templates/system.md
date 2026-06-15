@@ -6,14 +6,16 @@ Use for papers describing a system design: architecture, engineering tradeoffs, 
 type: source
 source_type: paper
 title: "<Full Paper Title>"
+doc_id: <doc_id>
 citekey: <citekey>
 item_key: <ITEMKEY>
+library_id: <libraryID>
 authors:
   - "<Author 1>"
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[.raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<doc_id>/<citekey>.md]]"
 status: seed
 paper_type: system
 key_claims:
@@ -54,7 +56,7 @@ related: []
 
 <!-- Describe the key components and how they interact. Embed an architecture diagram if available. -->
 
-![[attachments/papers/<citekey>/fig_<...>.png]]
+![[attachments/papers/<doc_id>/fig_<...>.png]]
 *<Architecture overview — label the key components> (p.<N>)*
 
 <Component-by-component description with page refs>

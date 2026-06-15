@@ -9,15 +9,17 @@ Every paper note starts with flat YAML frontmatter. No nested objects (Obsidian 
 type: source
 source_type: paper
 title: "Full Paper Title"
-citekey: smith2024              # BetterBibTeX citation key — primary key for wikilinks
+doc_id: lib-1/AB12CD34          # MinerU parse identity: lib-<libraryID>/<item_key>
+citekey: smith2024              # BetterBibTeX citation key — human-readable filename/alias
 item_key: AB12CD34              # Zotero 8-char item key — for zotero-mcp calls
+library_id: 1                   # Zotero libraryID; disambiguates same item key across libraries
 authors:
   - "First Author"
   - "Second Author"
 year: 2024
 venue: "NeurIPS"               # conference/journal, or "arXiv" for preprints
 url: "https://arxiv.org/abs/..."
-pdf: "[[.raw/smith2024/smith2024.md]]"  # link to hidden MinerU-parsed markdown
+pdf: "[[.raw/lib-1/AB12CD34/smith2024.md]]"  # link to hidden MinerU-parsed markdown
 status: seed                    # seed | developing | mature | evergreen
 paper_type: empirical           # empirical | theoretical | survey | system
 key_claims:
@@ -41,8 +43,10 @@ related:                        # wikilinks to other paper notes
 | `type` | ✅ | Always `source` |
 | `source_type` | ✅ | Always `paper` |
 | `title` | ✅ | Full paper title in quotes |
-| `citekey` | ✅ | BBT citation key; used as filename and wikilink target |
+| `doc_id` | ✅ | Canonical parse identity returned by `mineru_parse_pdf`; use for all MinerU tools |
+| `citekey` | ✅ | BBT citation key; human-readable filename/alias, not storage identity |
 | `item_key` | ✅ | Zotero item key; needed for `zotero_create_note` etc. |
+| `library_id` | recommended | Zotero libraryID; required when an item key is ambiguous across libraries |
 | `authors` | ✅ | List of full names |
 | `year` | ✅ | 4-digit year |
 | `venue` | ✅ | Conference/journal name, or `arXiv` |

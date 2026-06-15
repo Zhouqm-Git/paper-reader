@@ -6,14 +6,16 @@ Use for papers that review a field: taxonomy, comparison tables, trend analysis.
 type: source
 source_type: paper
 title: "<Full Paper Title>"
+doc_id: <doc_id>
 citekey: <citekey>
 item_key: <ITEMKEY>
+library_id: <libraryID>
 authors:
   - "<Author 1>"
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[.raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<doc_id>/<citekey>.md]]"
 status: seed
 paper_type: survey
 key_claims:
