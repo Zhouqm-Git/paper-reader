@@ -1,0 +1,14 @@
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Local agent / MCP configs
+.mcp.json
+.mcp.local.json
+
+# Runtime outputs
+raw/
+attachments/
+notes/

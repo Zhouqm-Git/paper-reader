@@ -1,0 +1,9 @@
+{
+  "name": "paper-reader",
+  "version": "0.1.0",
+  "description": "Read a Zotero paper via MinerU and write a structured analysis note in the Obsidian vault. Triggers on: read this paper, analyze this paper, write a note for this paper, paper review.",
+  "author": "Zhouqm",
+  "repository": "",
+  "license": "MIT",
+  "keywords": ["zotero", "mineru", "obsidian", "paper", "research", "mcp"]
+}
