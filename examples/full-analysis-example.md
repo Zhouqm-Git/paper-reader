@@ -11,7 +11,7 @@ A walkthrough of the paper-reader skill on a real paper. Shows the exact tool ca
 → mineru_parse_pdf(item_key="CFSHQZRJ")
 ← Parsed yingWBenchComprehensiveMultiturn2026.
    - pages: 51, images: 33, tables: 10, chars: 190490
-   - markdown: raw/yingWBenchComprehensiveMultiturn2026/...
+   - markdown: .raw/yingWBenchComprehensiveMultiturn2026/...
    - 12 figures auto-merged from fragments
 ```
 
@@ -55,8 +55,8 @@ Key passage read:
 ### Survey figures
 ```
 → mineru_list_visual_candidates(citekey="...")
-← Figure 1 — page 3: "Overview of WBench evaluation framework"  raw/.../fig_a_image_p3_0005.png
-   Figure 7 — page 21: "Scene and style coverage"               raw/.../fig_a_image_p21_0035.png
+← Figure 1 — page 3: "Overview of WBench evaluation framework"  attachments/papers/.../fig_a_image_p3_0005.png
+   Figure 7 — page 21: "Scene and style coverage"               attachments/papers/.../fig_a_image_p21_0035.png
    ...
 ```
 
@@ -75,7 +75,7 @@ Decision: Figure 1 (framework overview) is worth embedding — it shows the 5-di
     ("22 automatic sub-metrics validated against human judgments", "Section 4, p.12", "")
   ],
   "figures": [
-    ("Framework overview showing 5 dimensions", "p.3", "raw/.../fig_a_image_p3_0005.png")
+    ("Framework overview showing 5 dimensions", "p.3", "attachments/papers/.../fig_a_image_p3_0005.png")
   ]
 }
 ```
@@ -92,8 +92,8 @@ Decision: Figure 1 (framework overview) is worth embedding — it shows the 5-di
 | Method | **adequate** — dimensions well-motivated, but metric design (22 sub-metrics via specialist VLMs) is complex | Section 3 (p.8) |
 | Evidence | **strong** — evaluated 20 SOTA models, metrics validated against human judgments | p.12 |
 | Reproducibility | **adequate** — code/data promised, but metric computation depends on specialist vision models | github link (p.1) |
-| Generalizability | **adequate** — benchmark for current models; may need updating as models evolve | implicit |
-| Limitations | **weak** — doesn't deeply discuss which dimensions might be redundant or overly correlated | not found |
+| Generalizability | **unclear** — insufficient evidence in the collected ledger to assess transfer over time | insufficient evidence |
+| Limitations | **weak** — doesn't deeply discuss which dimensions might be redundant or overly correlated | limitations discussion checked; no such analysis found |
 | Positioning | **strong** — clear improvement over prior benchmarks in scope | Table 1 |
 | Writing | **adequate** — clear structure but dense; 51 pages | — |
 
@@ -118,7 +118,7 @@ authors:
 year: 2026
 venue: "arXiv"
 url: "https://arxiv.org/abs/2605.25874"
-pdf: "[[raw/yingWBenchComprehensiveMultiturn2026/yingWBenchComprehensiveMultiturn2026.md]]"
+pdf: "[[.raw/yingWBenchComprehensiveMultiturn2026/yingWBenchComprehensiveMultiturn2026.md]]"
 zotero: "[Zotero](zotero://select/library/items/CFSHQZRJ)"
 status: seed
 paper_type: empirical
@@ -173,7 +173,7 @@ The metric validation is thorough — each sub-metric's correlation with human j
 
 ## Figures
 
-![[raw/yingWBenchComprehensiveMultiturn2026/assets/fig_a_image_p3_0005.png]]
+![[attachments/papers/yingWBenchComprehensiveMultiturn2026/fig_a_image_p3_0005.png]]
 *Figure 1: Overview of the WBench evaluation framework showing the 5-dimension structure and how test cases flow through specialist evaluators (p.3).*
 
 ## Strengths

@@ -66,7 +66,7 @@ content: |-
   year: ${sharedObj.year}
   venue: "${sharedObj.venue}"
   url: "${sharedObj.url}"
-  pdf: "[[raw/${sharedObj.citekey}/${sharedObj.citekey}.md]]"
+  pdf: "[[.raw/${sharedObj.citekey}/${sharedObj.citekey}.md]]"
   status: seed
   paper_type: empirical
   key_claims:
@@ -123,7 +123,7 @@ content: |-
 
   ## Figures
 
-  <!-- Embed key figures. Use Obsidian embed syntax if syncing: ![[raw/citekey/assets/fig.png]] -->
+  <!-- Embed key figures. Use Obsidian embed syntax if syncing: ![[attachments/papers/citekey/fig.png]] -->
 
 
   ## Strengths
@@ -164,5 +164,5 @@ content: |-
 
 - The `paper_type: empirical` is hardcoded — change it manually after generation if the paper is theoretical/survey/system.
 - The `key_claims` are left empty for you or the agent to fill after reading.
-- The `pdf` wikilink assumes the paper has been parsed by `mineru_parse_pdf` (so `raw/<citekey>/` exists). If not parsed yet, the link will be broken until you parse.
+- The `pdf` wikilink assumes the paper has been parsed by `mineru_parse_pdf` (so `.raw/<citekey>/` exists). If not parsed yet, the link will be broken until you parse.
 - Better Notes renders this as a native Zotero note (HTML internally). When synced to Obsidian via Auto-Sync, it becomes the matching markdown file.

@@ -13,7 +13,7 @@ authors:
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<citekey>/<citekey>.md]]"
 status: seed
 paper_type: system
 key_claims:
@@ -54,7 +54,7 @@ related: []
 
 <!-- Describe the key components and how they interact. Embed an architecture diagram if available. -->
 
-![[raw/<citekey>/assets/fig_<...>.png]]
+![[attachments/papers/<citekey>/fig_<...>.png]]
 *<Architecture overview — label the key components> (p.<N>)*
 
 <Component-by-component description with page refs>

@@ -13,7 +13,7 @@ authors:
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<citekey>/<citekey>.md]]"
 status: seed
 paper_type: survey
 key_claims:

@@ -17,7 +17,7 @@ authors:
 year: 2024
 venue: "NeurIPS"               # conference/journal, or "arXiv" for preprints
 url: "https://arxiv.org/abs/..."
-pdf: "[[raw/smith2024/smith2024.md]]"   # link to MinerU-parsed markdown
+pdf: "[[.raw/smith2024/smith2024.md]]"  # link to hidden MinerU-parsed markdown
 status: seed                    # seed | developing | mature | evergreen
 paper_type: empirical           # empirical | theoretical | survey | system
 key_claims:
@@ -47,7 +47,7 @@ related:                        # wikilinks to other paper notes
 | `year` | ✅ | 4-digit year |
 | `venue` | ✅ | Conference/journal name, or `arXiv` |
 | `url` | ✅ | Paper URL |
-| `pdf` | ✅ | Wikilink to the parsed markdown in `raw/` |
+| `pdf` | ✅ | Wikilink to the parsed markdown in `.raw/` |
 | `status` | ✅ | `seed` on first write; advance as you revisit |
 | `paper_type` | ✅ | Determines which template was used |
 | `key_claims` | ✅ | 2-4 one-sentence claims (not summary — your distilled claims) |

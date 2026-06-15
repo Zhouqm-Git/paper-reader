@@ -47,8 +47,11 @@ The `$version` field in frontmatter tracks Zotero's internal note version. **Nev
 
 In Zotero → Edit → Preferences → Better Notes:
 - **Auto-sync period**: 30 seconds (balance between responsiveness and overhead).
-- **syncAttachmentFolder**: `assets` — so images referenced in the note sync alongside.
 - **Auto-sync linked notes**: enable (syncs notes that have Auto-Sync set).
+
+Do not rely on Better Notes to mirror vault-relative figure files. Paper figures
+stay in `attachments/papers/<citekey>/` and are meant to render in Obsidian; the
+Zotero mirror is primarily for text search, backup, and annotation links.
 
 ## Better Notes Note Template (Zotero-side)
 
@@ -65,8 +68,8 @@ This template matches the Obsidian `templates/empirical.md` structure, so notes 
 
 ## What Better Notes Does NOT Sync
 
-- **Images/figures**: Better Notes syncs the note HTML/markdown, but the image files stay in the Obsidian vault (`raw/<citekey>/assets/`). Zotero shows broken image links for vault-relative paths. This is a known limitation.
-- **The parsed markdown** (`raw/<citekey>/<citekey>.md`): this is a MinerU artifact, not a note. It stays in the vault only.
+- **Images/figures**: Better Notes syncs the note HTML/markdown, but the image files stay in the Obsidian vault (`attachments/papers/<citekey>/`). Zotero shows broken image links for vault-relative paths. This is a known limitation.
+- **The parsed markdown** (`.raw/<citekey>/<citekey>.md`): this is a MinerU artifact, not a note. It stays in the vault only.
 - **Anchors/content.json**: vault-only metadata.
 
 ## Troubleshooting

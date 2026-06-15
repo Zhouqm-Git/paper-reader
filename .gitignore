@@ -9,6 +9,7 @@
 .mcp.local.json
 
 # Runtime outputs
+.raw/
 raw/
 attachments/
 notes/

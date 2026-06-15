@@ -16,7 +16,7 @@ authors:
 year: <YYYY>
 venue: "<venue>"
 url: "<url>"
-pdf: "[[raw/<citekey>/<citekey>.md]]"
+pdf: "[[.raw/<citekey>/<citekey>.md]]"
 status: seed
 paper_type: empirical
 key_claims:
@@ -91,7 +91,7 @@ barely hurt, suggesting the gains come from stacking tricks?> (Table <N>, p.<N>)
 <!-- Only embed figures that add information beyond text. Architecture diagrams and key
      result plots are worth it; decorative icons are not. Use the auto-merged figure paths. -->
 
-![[raw/<citekey>/assets/fig_<...>.png]]
+![[attachments/papers/<citekey>/fig_<...>.png]]
 *<1-3 sentence visual reading — what does this figure show and why does it matter?>*
 
 ## Strengths

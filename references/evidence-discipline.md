@@ -17,7 +17,7 @@ The single most important rule in paper-reader: **never write a claim you cannot
 | Text you read | `(p.N)` page reference | "The model uses dual encoders (p.3)." |
 | Exact words | Block quote + page | `> We propose a novel loss function (p.4)` |
 | Table data | Inline GFM table + `Table N` label | See table below *(Table 2, p.6)* |
-| Figure | Embed + 1-3 sentence visual reading | `![[raw/.../fig.png]]` + "The architecture shows..." |
+| Figure | Embed + 1-3 sentence visual reading | `![[attachments/papers/.../fig.png]]` + "The architecture shows..." |
 | Equation | `$LaTeX$` + page | "The loss is $L = L_{ce} + \lambda L_{reg}$ (p.4)." |
 
 ## What Does NOT Count as Evidence
