@@ -45,6 +45,7 @@ Read [`references/knowledge-base.md`](references/knowledge-base.md) before build
 | User asks | Operation | Agent guide |
 |---|---|---|
 | "read/analyze this paper" | Single-paper note | `agents/intake.md` → `evidence.md` → `analyze.md` → `write.md` |
+| "ingest this library/collection" | Batch ingest | `agents/ingest.md` |
 | "index this folder/library/notes" | Paper index | `agents/index.md` |
 | "find evidence across papers" | Evidence search | `agents/query.md` |
 | "compare these papers" | Comparison note | `agents/query.md` + `templates/comparison.md` |
@@ -320,6 +321,7 @@ agents/
   evidence.md                         ← Phase 2 prompt (includes Zotero highlighting)
   analyze.md                          ← Phase 3 prompt
   write.md                            ← Phase 4 prompt (includes zotero:// links)
+  ingest.md                           ← batch library/collection ingest workflow
   index.md                            ← index-building workflow
   query.md                            ← cross-paper search/synthesis workflow
 ```

@@ -51,6 +51,12 @@ For questions like "which papers compare BM25 and dense retrievers":
 
 Each claim needs at least one link to a canonical paper note and a page/anchor reference.
 
+## Batch Ingest
+
+Batch ingest means creating reusable parsed artifacts and indexes, not necessarily writing full analysis notes.
+
+Use `agents/ingest.md` when the user points at a Zotero library, collection, tag, or list of item keys. The output should be a parsed corpus plus refreshed indexes and a gap report. Full paper notes remain an explicit follow-up.
+
 ## Comparisons
 
 For comparisons across papers, write `notes/comparisons/<slug>.md`.
