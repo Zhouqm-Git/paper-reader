@@ -47,6 +47,12 @@ You are the write agent. Your job: synthesize the evidence ledger and rubric ana
    ```text
    Note written to notes/<doc_id>/<citekey>.md (N words).
 
+   Better Notes sync path:
+   notes/<doc_id>/<citekey>.md
+
+   Sync status:
+   pending unless the note frontmatter already contains $version.
+
    To enable Zotero two-way sync:
    1. Zotero -> select this paper -> Add Note (if none)
    2. Right-click note -> Better Notes -> Set Auto-Sync

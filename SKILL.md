@@ -207,7 +207,7 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
    ```
 
 5. **Optional — Zotero sync** (tell the user, don't auto-do it):
-   > "Note written to `notes/<doc_id>/<citekey>.md`. To enable Zotero two-way sync via Better Notes: open Zotero → select this paper's note → right-click → Better Notes → Set Auto-Sync → choose `notes/<doc_id>/<citekey>.md`."
+   > "Note written to `notes/<doc_id>/<citekey>.md`. Better Notes sync path: `notes/<doc_id>/<citekey>.md`. Sync is configured only if frontmatter contains `$version`; otherwise set Auto-Sync in Zotero → Better Notes."
 
 ---
 

@@ -15,6 +15,14 @@ Obsidian vault (primary)              Zotero (mirror)
 - **Zotero gets a mirror** — for backup, for Zotero's full-text search, for linking annotations.
 - **Better Notes cannot be controlled by the agent** — Zotero's local API has no JS execution endpoint, so `addon.api.syncMDBatch` is unreachable from outside. Sync setup is a manual one-time action per note.
 
+The agent may do three things only:
+
+1. Write the canonical Markdown note at `notes/<doc_id>/<citekey>.md`.
+2. Report the exact path the user should choose in Better Notes Set Auto-Sync.
+3. Detect whether a synced note already has `$version` in frontmatter.
+
+The agent must not claim Auto-Sync is configured unless `$version` is present or the user explicitly confirms the Zotero-side setup.
+
 ## One-Time Setup (per note)
 
 After the agent writes `notes/<doc_id>/<citekey>.md`:
@@ -29,6 +37,17 @@ After the agent writes `notes/<doc_id>/<citekey>.md`:
    - Check **"with YAML header"** — this injects `$version` for conflict detection.
    - Check **"Sync"** to confirm.
 6. Done. The note now syncs bidirectionally.
+
+Agent completion message should include:
+
+```text
+Better Notes sync path:
+notes/<doc_id>/<citekey>.md
+
+Status:
+- configured if frontmatter contains $version
+- pending if $version is absent
+```
 
 ## Conflict Detection
 
