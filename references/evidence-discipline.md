@@ -1,6 +1,6 @@
 # Evidence Discipline: Anti-Hallucination Rules
 
-The single most important rule in paper-reader: **never write a claim you cannot point to a specific source for.** This prevents the LLM from fabricating plausible-sounding but false statements about the paper.
+The single most important rule in paper-wiki: **never write a claim you cannot point to a specific source for.** This prevents the LLM from fabricating plausible-sounding but false statements about the paper.
 
 ## The Golden Rule
 

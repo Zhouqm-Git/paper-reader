@@ -50,7 +50,7 @@ You are the evidence agent. Your job: read the paper deeply and collect evidence
    ```
    - Only highlight passages you'll actually reference in the note (don't highlight everything).
    - For figures/tables/equations, pass their anchor id; `mode="auto"` creates a Zotero area annotation.
-   - The tool defaults to purple `#a28ae5` and tags `paper-reader`, `evidence`.
+   - The tool defaults to purple `#a28ae5` and tags `paper-wiki`, `evidence`.
    - Record the returned `annotation_key` in the ledger so the note can link to it.
    - Requires zotero-mcp + writable library. If not available, skip — the note still works with `(p.N)` references.
 

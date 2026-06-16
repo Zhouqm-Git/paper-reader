@@ -1,9 +1,9 @@
 {
-  "name": "paper-reader",
+  "name": "paper-wiki",
   "version": "0.1.0",
-  "description": "Read a Zotero paper via MinerU and write a structured analysis note in the Obsidian vault. Triggers on: read this paper, analyze this paper, write a note for this paper, paper review.",
+  "description": "Build and query an Obsidian paper knowledge base from Zotero PDFs via MinerU. Supports single-paper notes, paper indexes, cross-paper synthesis, evidence search, and Zotero annotation links.",
   "author": "Zhouqm",
   "repository": "",
   "license": "MIT",
-  "keywords": ["zotero", "mineru", "obsidian", "paper", "research", "mcp"]
+  "keywords": ["zotero", "mineru", "obsidian", "paper", "research", "wiki", "mcp"]
 }

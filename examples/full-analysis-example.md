@@ -1,6 +1,6 @@
 # Full Analysis Example: WBench
 
-A walkthrough of the paper-reader skill on a real paper. Shows the exact tool calls, evidence collected, and final note produced. The paper is **WBench** (doc_id: `lib-1/CFSHQZRJ`, citekey: `yingWBenchComprehensiveMultiturn2026`, Zotero item_key: `CFSHQZRJ`).
+A walkthrough of the paper-wiki skill on a real paper. Shows the exact tool calls, evidence collected, and final note produced. The paper is **WBench** (doc_id: `lib-1/CFSHQZRJ`, citekey: `yingWBenchComprehensiveMultiturn2026`, Zotero item_key: `CFSHQZRJ`).
 
 ---
 

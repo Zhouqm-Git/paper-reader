@@ -1,22 +1,54 @@
 ---
-name: paper-reader
-description: "Read a Zotero paper via MinerU and write a structured analysis note in the Obsidian vault. Parses the PDF, collects evidence (text/tables/figures), highlights key passages as Zotero annotations, analyzes by rubric, then synthesizes a note. Triggers on: read this paper, analyze this paper, write a note for this paper, review this paper, paper-reader."
+name: paper-wiki
+description: "Build and query an Obsidian paper knowledge base from Zotero PDFs via MinerU. Supports single-paper analysis notes, parsed-pdf reuse, notes indexes, cross-paper question/comparison notes, evidence search, and Zotero annotation links. Triggers on: read this paper, analyze this paper, paper note, paper wiki, paper knowledge base, index my papers, summarize this paper folder, compare papers, find evidence across papers, multi-paper QA."
 ---
 
-# paper-reader: Evidence-Grounded Paper Reading
+# paper-wiki: Evidence-Grounded Paper Knowledge Base
 
-Read a Zotero paper end-to-end via MinerU, judge it by a technical rubric, and write a structured analysis note — every claim backed by a real page reference, GFM table, figure, or clickable Zotero annotation.
+Build a reusable paper wiki from Zotero PDFs. Single-paper reading is one operation; the larger goal is a persistent Markdown knowledge base where parsed PDF artifacts, paper notes, indexes, cross-paper questions, comparisons, and Zotero annotations reinforce each other.
 
-**Single source of truth for paper notes**: the note lives in the Obsidian vault at `notes/<doc_id>/<citekey>.md`. `doc_id` is the MinerU parse identity returned by `mineru_parse_pdf` (`lib-<libraryID>/<item_key>`), not the citekey. MinerU parse/cache artifacts live in hidden `.raw/<doc_id>/`; user-facing figure and region images live in `attachments/papers/<doc_id>/`. Better Notes (optional) mirrors the note back to Zotero for backup and search. Zotero annotations (highlights) created during analysis are clickable from the note via `zotero://` links.
+**Single source of truth for paper notes**: the canonical note lives at `notes/<doc_id>/<citekey>.md`. `doc_id` is the MinerU parse identity returned by `mineru_parse_pdf` (`lib-<libraryID>/<item_key>`), not the citekey. MinerU parse/cache artifacts live in hidden `.raw/<doc_id>/`; user-facing figure and region images live in `attachments/papers/<doc_id>/`. Indexes and synthesis pages link to canonical notes; they never duplicate full paper-note bodies.
 
 ## Prerequisites
 
-- **mineru-zotero-mcp** server: `mineru_parse_pdf`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_create_evidence_annotation`, `mineru_capture_region`, `mineru_check_quota`, `mineru_parse_batch`.
+- **mineru-zotero-mcp** server: `mineru_parse_pdf`, `mineru_parse_batch`, `mineru_list_documents`, `mineru_search_evidence`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_create_evidence_annotation`, `mineru_capture_region`, `mineru_check_quota`.
 - **zotero-mcp** server: `zotero_create_annotation`, `zotero_create_area_annotation`, `zotero_get_item_children`, `zotero_get_annotations`, `zotero_create_note`, `zotero_search_by_citation_key`.
 - Vault root set via `VAULT_ROOT` env. Papers parse to `.raw/<doc_id>/`; figures/captures go to `attachments/papers/<doc_id>/`; notes go to `notes/<doc_id>/<citekey>.md`.
 - Obsidian syntax follows the [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) `obsidian-markdown` skill if installed; otherwise standard OFM.
 
 ---
+
+## Knowledge Layout
+
+Use one canonical note per Zotero item parse and lightweight index/synthesis pages around it:
+
+```text
+.raw/<doc_id>/                         hidden MinerU source/cache layer
+attachments/papers/<doc_id>/           visible embeds for paper notes
+notes/<doc_id>/<citekey>.md            canonical single-paper analysis note
+notes/<doc_id>/index.md                optional landing page for one paper folder
+notes/_index.md                        master paper catalog
+notes/libraries/lib-<libraryID>/index.md
+notes/collections/<collection-path>/index.md
+notes/questions/<slug>.md              cross-paper answer with evidence links
+notes/comparisons/<slug>.md            cross-paper comparison/matrix
+```
+
+Do not copy a paper note into library or collection folders. A paper can appear in multiple Zotero collections; indexes are many-to-one link views over canonical notes.
+
+Read [`references/knowledge-base.md`](references/knowledge-base.md) before building indexes, cross-paper answers, comparisons, or deciding whether PageIndex is useful.
+
+---
+
+## Operations
+
+| User asks | Operation | Agent guide |
+|---|---|---|
+| "read/analyze this paper" | Single-paper note | `agents/intake.md` → `evidence.md` → `analyze.md` → `write.md` |
+| "index this folder/library/notes" | Paper index | `agents/index.md` |
+| "find evidence across papers" | Evidence search | `agents/query.md` |
+| "compare these papers" | Comparison note | `agents/query.md` + `templates/comparison.md` |
+| "which papers compare method X" | Cross-paper question note | `agents/query.md` + `templates/question.md` |
 
 ## The 4-Phase Workflow
 
@@ -176,6 +208,30 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 
 ---
 
+## Knowledge Base Workflows
+
+### Build or Refresh Indexes
+
+1. Run `mineru_list_documents(...)` to list parsed papers.
+2. Scan existing `notes/<doc_id>/<citekey>.md` files and their frontmatter.
+3. Update `notes/_index.md` as the master catalog.
+4. Update `notes/libraries/lib-<libraryID>/index.md` for library-level views.
+5. If Zotero collection information is available from zotero-mcp, update `notes/collections/<collection-path>/index.md` as link-only views.
+6. For each paper folder, create or refresh `notes/<doc_id>/index.md` only when useful; it should link the canonical note, parsed markdown, Zotero item, figures, and related synthesis pages.
+
+### Cross-Paper Query or Comparison
+
+1. Start with `mineru_list_documents` or an existing `notes/_index.md` to choose the scope.
+2. Use `mineru_search_evidence(query=..., doc_ids=[...])` to find candidate anchors across parsed papers.
+3. Resolve only the strongest anchors with `mineru_resolve_anchor`.
+4. Read the corresponding canonical notes when judgment/interpretation is needed.
+5. Write the result to `notes/questions/<slug>.md` or `notes/comparisons/<slug>.md`.
+6. Link every claim to canonical paper notes and include page/anchor evidence. Create Zotero evidence annotations only for passages the user is likely to revisit.
+
+Do not answer cross-paper questions from memory when parsed anchors or notes exist. Search first, then synthesize.
+
+---
+
 ## Available MCP Tools
 
 ### mineru-zotero-mcp (parsing + evidence extraction)
@@ -185,6 +241,8 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 | `mineru_parse_pdf` | Intake | Parse one Zotero PDF → `.raw/<doc_id>/` + `attachments/papers/<doc_id>/` |
 | `mineru_parse_batch` | Intake | Batch parse (checks quota first) |
 | `mineru_check_quota` | Intake | Estimate remaining MinerU quota |
+| `mineru_list_documents` | Index, Query | List parsed papers available for reuse |
+| `mineru_search_evidence` | Query | Search anchors across parsed papers |
 | `mineru_read_markdown` | Intake, Evidence | Read parsed md by `doc_id`, optionally by page |
 | `mineru_list_anchors` | Evidence | List text/image/table/equation anchors by `doc_id` |
 | `mineru_resolve_anchor` | Evidence | Get one anchor's detail by `doc_id` (tables → GFM) |
@@ -203,7 +261,7 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 | `zotero_create_note` | Write | Create a Zotero note item (for Better Notes sync) |
 | `zotero_search_by_citation_key` | Intake | Look up item_key from a citekey |
 
-**Division of labor**: mineru-zotero-mcp parses + extracts evidence and provides `mineru_create_evidence_annotation` as the high-level bridge from anchors to Zotero annotations. zotero-mcp still owns the low-level Zotero writes, notes, metadata, and search.
+**Division of labor**: mineru-zotero-mcp parses PDFs, exposes parsed artifacts, searches evidence anchors, and provides `mineru_create_evidence_annotation` as the high-level bridge from anchors to Zotero annotations. zotero-mcp owns low-level Zotero writes, notes, metadata, library/collection discovery, and search. Better Notes mirrors canonical notes back into Zotero when the user enables sync.
 
 ---
 
@@ -212,6 +270,9 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 - **full** (default): complete deep read + Zotero highlights + 8-dimension analysis. Use for papers central to your research.
 - **quick**: read abstract + intro + conclusion + main table only. 300-800 word note, skip annotation creation. Use for surveying many papers.
 - **figures**: focus on `list_visual_candidates` + figure analysis. Use for papers where the figures ARE the contribution.
+- **index**: update master/library/collection/folder index notes without re-reading whole papers.
+- **query**: answer a cross-paper question using `mineru_search_evidence`, notes, and source-linked synthesis pages.
+- **compare**: build a comparison matrix across papers, methods, datasets, metrics, or limitations.
 
 ---
 
@@ -223,6 +284,8 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 - ❌ **Section-by-section paraphrase**. Organize by analysis dimensions, not paper sections.
 - ❌ **Embedding raw HTML tables**. Use GFM pipe tables. Only fall back to HTML for >500-cell complex tables.
 - ❌ **Using yellow `#ffd400` for agent annotations**. Use `mineru_create_evidence_annotation`'s purple default `#a28ae5` so user can distinguish.
+- ❌ **Duplicating canonical paper notes into collection folders**. Collections and libraries get index pages linking to `notes/<doc_id>/<citekey>.md`.
+- ❌ **Treating PageIndex as a default dependency**. Use it only for long single documents where section-tree navigation beats existing MinerU anchors.
 
 ---
 
@@ -235,11 +298,15 @@ references/
   evidence-discipline.md              ← anti-hallucination rules
   analysis-rubric.md                  ← 8-dimension scoring criteria
   better-notes-sync.md                ← Zotero two-way sync setup + conflict handling
+  knowledge-base.md                   ← indexes, cross-paper QA, PageIndex decision rules
 templates/
   empirical.md                        ← experiment papers (datasets/baselines/ablations)
   theoretical.md                      ← theory papers (definitions/theorems/proofs)
   survey.md                           ← survey papers (taxonomy/comparison/trends)
   system.md                           ← system papers (architecture/engineering)
+  question.md                         ← cross-paper answer note
+  comparison.md                       ← cross-paper comparison note
+  index.md                            ← paper/library/collection index note
   better-notes-zotero-template.yaml   ← Better Notes Item template (Zotero-side)
 examples/
   full-analysis-example.md            ← walkthrough on a real paper (WBench)
@@ -248,4 +315,6 @@ agents/
   evidence.md                         ← Phase 2 prompt (includes Zotero highlighting)
   analyze.md                          ← Phase 3 prompt
   write.md                            ← Phase 4 prompt (includes zotero:// links)
+  index.md                            ← index-building workflow
+  query.md                            ← cross-paper search/synthesis workflow
 ```
