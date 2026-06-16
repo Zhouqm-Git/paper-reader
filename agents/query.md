@@ -10,26 +10,27 @@ You answer questions across parsed papers and paper notes, then write valuable a
 ## Steps
 
 1. Read `references/knowledge-base.md`.
-2. Determine query type:
+2. Run `mineru_doctor` if this is the first paper-wiki operation in the session. Stop on `FAIL`.
+3. Determine query type:
    - factual lookup across papers -> question note
    - side-by-side evaluation -> comparison note
    - evidence gathering only -> return anchor list and ask before writing
-3. Establish scope with `mineru_list_documents` or an existing index page.
-4. Search evidence:
+4. Establish scope with `mineru_list_documents` or an existing index page.
+5. Search evidence:
    ```
    mineru_search_evidence(query="user terms", doc_ids=[...], limit=20)
    ```
    Run additional searches for obvious synonyms or method names.
-5. Resolve the strongest anchors:
+6. Resolve the strongest anchors:
    ```
    mineru_resolve_anchor(doc_id="lib-1/ABCD1234", anchor_id="a_table_p5_0000")
    ```
-6. Read canonical paper notes for interpretation and prior judgments.
-7. Write the result:
+7. Read canonical paper notes for interpretation and prior judgments.
+8. Write the result:
    - `notes/questions/<slug>.md` for answers
    - `notes/comparisons/<slug>.md` for matrices/comparisons
-8. Link every claim to canonical notes and include page/anchor evidence.
-9. Optionally create Zotero annotations with `mineru_create_evidence_annotation` for evidence the user is likely to revisit.
+9. Link every claim to canonical notes and include page/anchor evidence.
+10. Optionally create Zotero annotations with `mineru_create_evidence_annotation` for evidence the user is likely to revisit.
 
 ## Quality Bar
 

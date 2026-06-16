@@ -11,15 +11,16 @@ You maintain the paper wiki indexes. Your job is to make parsed papers and canon
 ## Steps
 
 1. Read `references/knowledge-base.md`.
-2. Run `mineru_list_documents(...)` for the requested scope.
-3. Inspect existing note frontmatter for title, authors, year, venue, status, tags, and key_claims.
-4. Write or update the relevant index:
+2. Run `mineru_doctor`. Stop on `FAIL`; continue past `WARN` only if the requested index can still be built.
+3. Run `mineru_list_documents(...)` for the requested scope.
+4. Inspect existing note frontmatter for title, authors, year, venue, status, tags, and key_claims.
+5. Write or update the relevant index:
    - all papers: `notes/_index.md`
    - library: `notes/libraries/lib-<libraryID>/index.md`
    - collection: `notes/collections/<collection-path>/index.md`
    - one paper folder: `notes/<doc_id>/index.md`
-5. Link canonical notes using `[[notes/<doc_id>/<citekey>|citekey]]`.
-6. Add a "Gaps" section for parsed papers without notes, notes without parse artifacts, stale notes, or missing evidence.
+6. Link canonical notes using `[[notes/<doc_id>/<citekey>|citekey]]`.
+7. Add a "Gaps" section for parsed papers without notes, notes without parse artifacts, stale notes, or missing evidence.
 
 ## Rules
 

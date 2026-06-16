@@ -11,7 +11,7 @@ Build a reusable paper wiki from Zotero PDFs. Single-paper reading is one operat
 
 ## Prerequisites
 
-- **mineru-zotero-mcp** server: `mineru_parse_pdf`, `mineru_parse_batch`, `mineru_list_documents`, `mineru_search_evidence`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_create_evidence_annotation`, `mineru_capture_region`, `mineru_check_quota`.
+- **mineru-zotero-mcp** server: `mineru_doctor`, `mineru_parse_pdf`, `mineru_parse_batch`, `mineru_list_documents`, `mineru_search_evidence`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_create_evidence_annotation`, `mineru_capture_region`, `mineru_check_quota`.
 - **zotero-mcp** server: `zotero_create_annotation`, `zotero_create_area_annotation`, `zotero_get_item_children`, `zotero_get_annotations`, `zotero_create_note`, `zotero_search_by_citation_key`.
 - Vault root set via `VAULT_ROOT` env. Papers parse to `.raw/<doc_id>/`; figures/captures go to `attachments/papers/<doc_id>/`; notes go to `notes/<doc_id>/<citekey>.md`.
 - Obsidian syntax follows the [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) `obsidian-markdown` skill if installed; otherwise standard OFM.
@@ -49,6 +49,8 @@ Read [`references/knowledge-base.md`](references/knowledge-base.md) before build
 | "find evidence across papers" | Evidence search | `agents/query.md` |
 | "compare these papers" | Comparison note | `agents/query.md` + `templates/comparison.md` |
 | "which papers compare method X" | Cross-paper question note | `agents/query.md` + `templates/question.md` |
+
+Before batch parse, indexing, or cross-paper synthesis, run `mineru_doctor` once. Fix `FAIL` items first; `WARN` items may be acceptable for first-run or read-only workflows.
 
 ## The 4-Phase Workflow
 
@@ -238,6 +240,7 @@ Do not answer cross-paper questions from memory when parsed anchors or notes exi
 
 | Tool | Phase | Purpose |
 |---|---|---|
+| `mineru_doctor` | Setup | Check vault, MinerU env, Zotero bridge, BBT port, notes, and parsed artifacts |
 | `mineru_parse_pdf` | Intake | Parse one Zotero PDF → `.raw/<doc_id>/` + `attachments/papers/<doc_id>/` |
 | `mineru_parse_batch` | Intake | Batch parse (checks quota first) |
 | `mineru_check_quota` | Intake | Estimate remaining MinerU quota |
