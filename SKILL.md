@@ -313,6 +313,8 @@ templates/
   better-notes-zotero-template.yaml   ← Better Notes Item template (Zotero-side)
 examples/
   full-analysis-example.md            ← walkthrough on a real paper (WBench)
+scripts/
+  build_indexes.py                    ← deterministic notes/_index.md and library index builder
 agents/
   intake.md                           ← Phase 1 prompt
   evidence.md                         ← Phase 2 prompt (includes Zotero highlighting)

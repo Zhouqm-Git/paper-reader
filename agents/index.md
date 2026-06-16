@@ -12,8 +12,15 @@ You maintain the paper wiki indexes. Your job is to make parsed papers and canon
 
 1. Read `references/knowledge-base.md`.
 2. Run `mineru_doctor`. Stop on `FAIL`; continue past `WARN` only if the requested index can still be built.
-3. Run `mineru_list_documents(...)` for the requested scope.
-4. Inspect existing note frontmatter for title, authors, year, venue, status, tags, and key_claims.
+3. Prefer the deterministic index builder:
+   ```bash
+   python3 scripts/build_indexes.py --vault "$VAULT_ROOT"
+   ```
+   For one library:
+   ```bash
+   python3 scripts/build_indexes.py --vault "$VAULT_ROOT" --library-id 1
+   ```
+4. If the script cannot cover the requested scope, run `mineru_list_documents(...)` and inspect existing note frontmatter manually.
 5. Write or update the relevant index:
    - all papers: `notes/_index.md`
    - library: `notes/libraries/lib-<libraryID>/index.md`

@@ -30,6 +30,15 @@ Index pages should include:
 
 Do not duplicate paper-note bodies into indexes.
 
+Use `scripts/build_indexes.py` for the default all-papers and per-library indexes:
+
+```bash
+python3 scripts/build_indexes.py --vault "$VAULT_ROOT"
+python3 scripts/build_indexes.py --vault "$VAULT_ROOT" --library-id 1
+```
+
+The script overwrites generated `notes/_index.md` and `notes/libraries/lib-*/index.md`. Keep manual narrative in question/comparison pages, not in generated indexes.
+
 ## Cross-Paper Questions
 
 For questions like "which papers compare BM25 and dense retrievers":
