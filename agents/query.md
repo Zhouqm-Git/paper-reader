@@ -20,6 +20,10 @@ You answer questions across parsed papers and paper notes, then write valuable a
    ```
    mineru_search_evidence(query="user terms", doc_ids=[...], limit=20)
    ```
+   For method/dataset/baseline comparisons, prefer strict term coverage:
+   ```
+   mineru_search_evidence(query="dense reranker", doc_ids=[...], match="all", limit=20)
+   ```
    Run additional searches for obvious synonyms or method names.
 6. Resolve the strongest anchors:
    ```
