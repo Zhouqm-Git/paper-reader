@@ -1,7 +1,7 @@
 {
   "name": "paper-wiki",
   "version": "0.1.0",
-  "description": "Build and query an Obsidian paper knowledge base from Zotero PDFs via MinerU. Supports single-paper notes, paper indexes, cross-paper synthesis, evidence search, and Zotero annotation links.",
+  "description": "Legacy standalone package. Canonical Zotero-aware paper wiki implementation now lives in mineru-zotero-mcp/skills/paper-wiki and integrates with claude-obsidian.",
   "author": "Zhouqm",
   "repository": "",
   "license": "MIT",
