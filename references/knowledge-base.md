@@ -39,6 +39,16 @@ python3 scripts/build_indexes.py --vault "$VAULT_ROOT" --library-id 1
 
 The script overwrites generated `notes/_index.md` and `notes/libraries/lib-*/index.md`. Keep manual narrative in question/comparison pages, not in generated indexes.
 
+## Lint
+
+Run a read-only consistency check after batch ingest or large note edits:
+
+```bash
+python3 scripts/lint_vault.py --vault "$VAULT_ROOT"
+```
+
+It checks canonical note frontmatter, `.raw/<doc_id>/anchors.json`, missing embeds, and whether `notes/_index.md` exists.
+
 ## Cross-Paper Questions
 
 For questions like "which papers compare BM25 and dense retrievers":

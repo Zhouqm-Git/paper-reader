@@ -50,6 +50,7 @@ Read [`references/knowledge-base.md`](references/knowledge-base.md) before build
 | "find evidence across papers" | Evidence search | `agents/query.md` |
 | "compare these papers" | Comparison note | `agents/query.md` + `templates/comparison.md` |
 | "which papers compare method X" | Cross-paper question note | `agents/query.md` + `templates/question.md` |
+| "lint/check paper wiki" | Vault consistency lint | `python3 scripts/lint_vault.py --vault "$VAULT_ROOT"` |
 
 Before batch parse, indexing, or cross-paper synthesis, run `mineru_doctor` once. Fix `FAIL` items first; `WARN` items may be acceptable for first-run or read-only workflows.
 
@@ -316,6 +317,7 @@ examples/
   full-analysis-example.md            ← walkthrough on a real paper (WBench)
 scripts/
   build_indexes.py                    ← deterministic notes/_index.md and library index builder
+  lint_vault.py                       ← read-only consistency check for notes/raw artifacts/embeds
 agents/
   intake.md                           ← Phase 1 prompt
   evidence.md                         ← Phase 2 prompt (includes Zotero highlighting)
