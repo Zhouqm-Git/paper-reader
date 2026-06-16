@@ -11,7 +11,7 @@ Read a Zotero paper end-to-end via MinerU, judge it by a technical rubric, and w
 
 ## Prerequisites
 
-- **mineru-zotero-mcp** server: `mineru_parse_pdf`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_capture_region`, `mineru_check_quota`, `mineru_parse_batch`.
+- **mineru-zotero-mcp** server: `mineru_parse_pdf`, `mineru_read_markdown`, `mineru_list_anchors`, `mineru_resolve_anchor`, `mineru_list_visual_candidates`, `mineru_create_evidence_annotation`, `mineru_capture_region`, `mineru_check_quota`, `mineru_parse_batch`.
 - **zotero-mcp** server: `zotero_create_annotation`, `zotero_create_area_annotation`, `zotero_get_item_children`, `zotero_get_annotations`, `zotero_create_note`, `zotero_search_by_citation_key`.
 - Vault root set via `VAULT_ROOT` env. Papers parse to `.raw/<doc_id>/`; figures/captures go to `attachments/papers/<doc_id>/`; notes go to `notes/<doc_id>/<citekey>.md`.
 - Obsidian syntax follows the [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) `obsidian-markdown` skill if installed; otherwise standard OFM.
@@ -88,26 +88,22 @@ The golden rule across all phases: **never write a claim you cannot point to a p
 
 4. **Highlight key passages in Zotero** (recommended for `full` mode) — creates clickable traceability from note to PDF:
    ```
-   # First get the attachment_key (create_annotation needs it, not item_key)
-   zotero_get_item_children(item_key="CFSHQZRJ")
-   → find the PDF attachment: key="J948UCPU"
-
-   # Then highlight the exact text you'll cite later
-   zotero_create_annotation(
-     attachment_key="J948UCPU",
-     page=3,
-     text="we propose Positional Skip-wisE (PoSE) training",
+   # Use anchor ids gathered from mineru_list_anchors / mineru_resolve_anchor.
+   # Text/list anchors become text highlights; image/table/equation anchors become area annotations.
+   mineru_create_evidence_annotation(
+     doc_id="lib-1/CFSHQZRJ",
+     anchor_id="a_text_p3_0002",
      comment="core method — cite in contribution section",
-     color="#a28ae5"
+     mode="auto"
    )
    ```
-   Only highlight passages you'll actually reference in the note. For figures, use `zotero_create_area_annotation` with the bbox from `mineru_capture_region`.
+   Only highlight passages/regions you'll actually reference in the note. The tool resolves the Zotero PDF `attachment_key`, page, text, and bbox automatically.
 
    **Annotation color convention** — the agent MUST use a distinct color so its highlights are visually separable from the user's own:
 
    | Color | Hex | Who |
    |---|---|---|
-   | **Purple** | `#a28ae5` | **Agent** (always use this for `zotero_create_annotation`) |
+   | **Purple** | `#a28ae5` | **Agent** (default for `mineru_create_evidence_annotation`) |
    | Yellow | `#ffd400` | User (Zotero default) |
    | Red | `#ff6666` | User (important) |
    | Green | `#5fb236` | User |
@@ -193,20 +189,21 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 | `mineru_list_anchors` | Evidence | List text/image/table/equation anchors by `doc_id` |
 | `mineru_resolve_anchor` | Evidence | Get one anchor's detail by `doc_id` (tables → GFM) |
 | `mineru_list_visual_candidates` | Evidence | Figure catalog by `doc_id` (caption + path + context) |
+| `mineru_create_evidence_annotation` | Evidence | Create a Zotero annotation from `doc_id + anchor_id` |
 | `mineru_capture_region` | Evidence | Render a formula/table/text region as PNG under `attachments/papers/<doc_id>/` |
 
 ### zotero-mcp (annotations + notes + metadata)
 
 | Tool | Phase | Purpose |
 |---|---|---|
-| `zotero_get_item_children` | Evidence | Get attachment_key (needed for create_annotation) |
-| `zotero_create_annotation` | Evidence | Highlight a text passage (color=`#a28ae5` purple) |
-| `zotero_create_area_annotation` | Evidence | Box a figure/region (use capture_region's bbox) |
+| `zotero_get_item_children` | Evidence | Low-level fallback: get attachment_key |
+| `zotero_create_annotation` | Evidence | Low-level fallback: highlight a text passage |
+| `zotero_create_area_annotation` | Evidence | Low-level fallback: box a PDF region |
 | `zotero_get_annotations` | Evidence | Read existing Zotero annotations |
 | `zotero_create_note` | Write | Create a Zotero note item (for Better Notes sync) |
 | `zotero_search_by_citation_key` | Intake | Look up item_key from a citekey |
 
-**Division of labor**: mineru-zotero-mcp parses + extracts evidence. zotero-mcp manages annotations, notes, metadata. The agent orchestrates both — e.g., `mineru_capture_region` gives page+bbox, then `zotero_create_area_annotation` uses those coordinates to create a clickable annotation in the PDF.
+**Division of labor**: mineru-zotero-mcp parses + extracts evidence and provides `mineru_create_evidence_annotation` as the high-level bridge from anchors to Zotero annotations. zotero-mcp still owns the low-level Zotero writes, notes, metadata, and search.
 
 ---
 
@@ -225,7 +222,7 @@ For each dimension: write 1-3 sentences of judgment + attach evidence (page/tabl
 - ❌ **Using `@[[metaName]]`** (old CiteFlow syntax). Use `(p.3)`, an Obsidian note link, or `![[path]]`.
 - ❌ **Section-by-section paraphrase**. Organize by analysis dimensions, not paper sections.
 - ❌ **Embedding raw HTML tables**. Use GFM pipe tables. Only fall back to HTML for >500-cell complex tables.
-- ❌ **Using yellow `#ffd400` for agent annotations**. Always use purple `#a28ae5` so user can distinguish.
+- ❌ **Using yellow `#ffd400` for agent annotations**. Use `mineru_create_evidence_annotation`'s purple default `#a28ae5` so user can distinguish.
 
 ---
 

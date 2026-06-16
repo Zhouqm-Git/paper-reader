@@ -40,21 +40,17 @@ You are the evidence agent. Your job: read the paper deeply and collect evidence
 
 5. **Highlight key passages in Zotero** (recommended for `full` mode) — creates clickable traceability from note to PDF:
    ```
-   # Get the PDF attachment key (create_annotation needs it, not item_key)
-   zotero_get_item_children(item_key="CFSHQZRJ")
-   → find PDF attachment: attachment_key="J948UCPU"
-
-   # Highlight passages you'll cite in the note
-   zotero_create_annotation(
-     attachment_key="J948UCPU",
-     page=3,
-     text="exact text from the PDF (must match the text layer)",
+   # Use an anchor id from mineru_list_anchors / mineru_resolve_anchor.
+   mineru_create_evidence_annotation(
+     doc_id=...,
+     anchor_id="a_text_p3_0002",
      comment="why this matters — e.g., 'core contribution'",
-     color="#a28ae5"   # PURPLE = agent-created (distinct from user's yellow highlights)
+     mode="auto"
    )
    ```
    - Only highlight passages you'll actually reference in the note (don't highlight everything).
-   - For figures/regions: use `zotero_create_area_annotation` with page + x/y/width/height (from `mineru_capture_region`'s bbox).
+   - For figures/tables/equations, pass their anchor id; `mode="auto"` creates a Zotero area annotation.
+   - The tool defaults to purple `#a28ae5` and tags `paper-reader`, `evidence`.
    - Record the returned `annotation_key` in the ledger so the note can link to it.
    - Requires zotero-mcp + writable library. If not available, skip — the note still works with `(p.N)` references.
 
